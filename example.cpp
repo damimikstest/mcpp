@@ -11,10 +11,9 @@ int main(){
 	cin >> count;
 	int *table = new int[count];
 	cout << "Wpisz tekst" << endl;
-	cout.flush();
-
-	cin >> ws;
-	int x = cin.peek();
+	cout.flush(); // synchronize output with stream
+	cin >> ws; // ignore whitespaces
+	int x = cin.peek(); // get 
 	for(int i = 0; i < count; i++){
 		table[i] = 0;
 		if(isdigit(x))
