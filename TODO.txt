@@ -1,0 +1,29 @@
+metody Vector:
+
+✓	konstruktor
+✓	konstruktor kopiujący
+✓	destruktor
+
+✓	operator=, 
+✓	operator+, 
+✓	operator-, 
+☐	operator*,
+✓	operator==, 
+✓	operator!=,
+
+	 
+✓	operator[] (indeksowanie), 
+✓	operator<< (operator wyjscia), 
+✓	operator>> (operator wejscia), 
+✓	operator+=,
+✓	operator-=, 
+☐	operator*= .
+
+
+
+
+
+
+
+
+
