@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdio>
+#include <cstdlib>
 #include <string>
+#include "colours.h"
 
 
 #ifndef TRUE
@@ -60,7 +62,7 @@ Vector::Vector(const Vector &ref){
 /* Destructor */
 Vector::~Vector(){
 	delete fields;
-	cout << "(object deleted)" << endl;
+	cout << FG_DARK_GRAY << "(object deleted)" << RST << endl;
 }
 
 /* Overloaded assignment operator */
@@ -72,14 +74,14 @@ void Vector::operator=(const Vector &ref){
 
 /* Overloaded out stream operator */ 
 ostream& operator<<(ostream& os, const Vector &ref){
-	cout << "(";
+	cout << KGRN << "(";
 	for(int i = 0; i < ref.dim; i++)
 	{
 		os << ref.fields[i];
 		if(i == (ref.dim - 1)) break;
 		os << ", ";
 	}
-	os << ")" << endl;
+	os << ")" << RST << endl;
 	return os;
 }
 
@@ -115,7 +117,7 @@ istream& operator>>(istream& is, Vector &ref){
 	do{
 		rest = is.get();
 	}while(rest != '\n');
-	cout << "buffer clean!" << endl;
+	cout << FG_DARK_GRAY << "buffer clean!" << RST << endl;
 	return is;
 }
 
@@ -177,7 +179,7 @@ void Vector::operator*=(int scalar){
 
 
 /* Overloaded logic operators */
-/* Comparison */
+/* Comparison - Is equal */
 bool Vector::operator==(const Vector &ref){
 	if(dim == ref.dim){
 		for(int i = 0; i < dim; i++){
@@ -186,13 +188,70 @@ bool Vector::operator==(const Vector &ref){
 		return TRUE;
 	} else return FALSE;
 }
-/* Difference */
+/* Difference - Is not equal */
 bool Vector::operator!=(const Vector &ref){
 	return !((*this) == ref);
 }
 
 
 /* --------------- END OF VECTOR.CPP ------------ */
+
+/* ----------------- HEADER.HPP ----------------- */
+
+class Matrix
+	: public Vector	
+{
+	int rows;
+	Vector *vectors;
+public:
+	Matrix(int r = 2, int d = 2);
+	Matrix(const Matrix &ref);
+	~Matrix();
+	
+	/* Overloaded equality operator   
+	   It simply rewrite values from right 
+	   operand (ref) to left operand (this object) */
+	void operator=(const Matrix &ref);
+	/* Stream operators overloading */
+	friend ostream& operator<<(ostream& os, const Matrix &ref);
+	friend istream& operator>>(istream& is, Matrix &ref);
+	int &operator[](unsigned int index);
+	/* Overloaded arithmetic operator */
+	Matrix operator+(const Matrix &ref);
+	Matrix operator-(const Matrix &ref);
+	Matrix operator*(int scalar);
+	void operator+=(const Matrix &ref);
+	void operator-=(const Matrix &ref);
+	void operator*=(int scalar);
+	bool operator==(const Matrix &ref);
+	bool operator!=(const Matrix &ref);	
+};
+
+/* ------------- END OF HEADER.HPP -------------- */
+
+/* ----------------- MATRIX.CPP ----------------- */
+
+Matrix::Matrix(int r, int d){
+	rows = r;
+	vectors = new Vector[r];
+}
+Matrix::Matrix(const Matrix &ref){
+	rows = ref.rows;
+	vectors = new Vector[rows];
+	for (int i = 0; i < rows; ++i) vectors[i] = ref.vectors[i];
+}
+Matrix::~Matrix(){
+	delete vectors;
+	cout << FG_DARK_GRAY << "(matrix deleted)" << RST << endl;
+}
+/* Overloaded assignment operator */
+void Matrix::operator=(const Matrix &ref){
+	rows = ref.rows;
+	vectors = new Vector[rows];
+	for (int i = 0; i < rows; ++i) vectors[i] = ref.vectors[i];
+}
+
+/* ------------- END OF MATRIX.CPP -------------- */
 
 /* ----------- MAIN.CPP - PROGRAM CODE ---------- */
 
@@ -201,45 +260,52 @@ int main()
 	int mem = 2;
 	Vector a(4);
 	Vector b(4);
-	cout << "Wpisz wartości wektorów" << endl;
+	system("clear");
+	cout << "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀" << endl;
+	cout << "Type the coords values:" << endl;
 	cin >> a;
 	cin >> b;
-	cout << "Vector is:" << endl;
-	cout << a;
-	cout << b;
+	cout << "Loaded vectors are:" << endl;
+	cout << "Vector A: " << a;
+	cout << "Vector B: " << b;
 	/* Test of arithmetic operations */
+	cout << "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀" << endl;
 	cout << "Arithmetic operations test:" << endl;
 	cout << "Addition:" << endl << a << "+"
 	<< endl << b << "=" << endl << (a + b) << endl;
 	cout << "Substraction:" << endl << a << "-"
 	<< endl << b << "=" << endl << (a - b) << endl;
 	a += b;
+	cout << "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀" << endl;
 	cout << "Addition with assignment: a += b" << endl << a << endl;
 	b -= a;
 	cout << "Substraction with assignment: b -= a" << endl << b << endl;
 	cout << "Logic operations test:" << endl;
 	cout << "A equal to B:      " << (a == b) << endl;
 	cout << "A not equal to B:  " << (a != b) << endl << endl;
-	cout << "Przypisanie:" << endl;
+	cout << "Assignment:" << endl;
 	a = b;
 	cout << "We made vector a = b:" << endl;
 	cout << a;
 	cout << b;
-	cout << "Wpisz wymiar wektora" << endl;
+	cout << "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀" << endl;
+	cout << "Type the dimension of new Vector:" << endl;
 	cin >> mem;
 	Vector *nv = new Vector(mem);
 	Vector &c = *nv;
-	cout << "Wpisz współrzędne wektora" << endl;
+	cout << "Type the coords values:" << endl;
 	cin >> c;
 	cout << "Loaded vector is:" << endl;
 	cout << c;
-	cout << "Vector with index 1 is: " << c[1] << endl << endl;
+	cout << "Coord with index [1] has value: " << c[1] << endl << endl;
 	/* Multiplication by scalar */
+	cout << "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀" << endl;
 	cout << "Type a scalar:" << endl;
 	cin >> mem;
 	cout << "c * scalar = " << c * mem << endl;
 	c *= mem;
-	cout << "Again using same variable: c *= scalar" << c << endl;
+	cout << "Again using same variable: c *= scalar" 
+	<< endl << "c values are: " << c << endl;
 	/* c object have been dynamically allocated
 	in this block so I decided to delete it manually, because before the end of
 	block main function returns 0 and only after that the block is ending. 
