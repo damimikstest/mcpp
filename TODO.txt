@@ -30,15 +30,15 @@ metody Matrix:
 ✓	operator+, 
 ✓	operator-, 
 ✓	operator*,
-☐	operator==, 
-☐	operator!=,
+✓	operator==, 
+✓	operator!=,
 
 ✓	operator[] (indeksowanie), 
 ✓	operator<< (operator wyjscia), 
 ✓	operator>> (operator wejscia), 
-☐	operator+=,
-☐	operator-=, 
-☐	operator*=.
+✓	operator+=,
+✓	operator-=, 
+✓	operator*=.
 
 
 
